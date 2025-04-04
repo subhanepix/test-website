@@ -3,341 +3,448 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Subhan Sajid - Resume</title>
+    <title>Subhan Sajid - Digital Showcase</title>
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <style>
-        /* --- Global Styles & Variables --- */
+        /* --- Global Styles & Vibrant Variables --- */
         :root {
-            --primary-color: #2c3e50; /* Dark Blue/Gray */
-            --secondary-color: #3498db; /* Medium Blue */
-            --accent-color: #e74c3c; /* Red Accent */
-            --light-gray: #ecf0f1;
-            --dark-gray: #7f8c8d;
-            --text-color: #34495e;
-            --bg-color: #ffffff;
-            --card-bg: #f8f9fa;
-            --border-radius: 8px;
-            --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            --transition-speed: 0.3s;
+            --bg-dark: #121828; /* Even Deeper Navy */
+            --bg-medium: #1a2238; /* Slightly Lighter Navy */
+            --bg-light: #2a3a5e; /* Muted Blue */
+            --primary-accent: #ff6b6b; /* Coral Red */
+            --secondary-accent: #4ecdc4; /* Teal Mint */
+            --tertiary-accent: #feca57; /* Yellow Orange */
+            --text-light: #f0f8ff; /* Alice Blue (off-white) */
+            --text-medium: #a9b8d0; /* Light Steel Blue */
+            --text-dark: #333;
+            --gradient-primary: linear-gradient(135deg, var(--primary-accent), var(--tertiary-accent));
+            --gradient-secondary: linear-gradient(135deg, var(--secondary-accent), #5a9cd1);
+            --gradient-background: linear-gradient(180deg, var(--bg-dark) 0%, var(--bg-medium) 100%);
+
+            --border-radius: 12px;
+            --box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+             --box-shadow-light: 0 4px 15px rgba(0, 0, 0, 0.2);
+            --transition-speed: 0.4s;
+            --transition-bezier: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --font-primary: 'Poppins', sans-serif;
+            --font-code: 'Roboto Mono', monospace;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            line-height: 1.7;
-            color: var(--text-color);
-            background-color: var(--bg-color);
+            font-family: var(--font-primary);
+            line-height: 1.8;
+            color: var(--text-light);
+            background: var(--gradient-background); /* Apply gradient bg */
             font-size: 16px;
+            overflow-x: hidden;
         }
 
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 20px;
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 25px; position: relative; z-index: 2; } /* Ensure content above shapes */
+
+        h1, h2, h3, h4 { font-weight: 600; color: var(--text-light); margin-bottom: 0.7em; line-height: 1.3; }
+        h1 { font-size: 3.2rem; margin-bottom: 0.3em; }
+        h2 {
+            font-size: 2.4rem; margin-bottom: 1.8em; display: inline-block; position: relative; padding-bottom: 15px;
+            color: var(--text-light); text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
         }
-
-        h1, h2, h3, h4, h5, h6 {
-            font-weight: 600;
-            color: var(--primary-color);
-            margin-bottom: 0.8em;
+        h2 i { /* Icon before title */
+            margin-right: 15px;
+            font-size: 0.8em; /* Slightly smaller than text */
+            color: var(--secondary-accent);
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+            transition-delay: 0.4s; /* Delay icon fade-in */
         }
+        section.visible h2 i { opacity: 1; transform: translateX(0); }
 
-        h1 { font-size: 2.8rem; line-height: 1.2; margin-bottom: 0.3em; }
-        h2 { font-size: 2rem; border-bottom: 3px solid var(--secondary-color); padding-bottom: 0.3em; margin-bottom: 1.5em; display: inline-block; }
-        h3 { font-size: 1.4rem; color: var(--secondary-color); }
-        h4 { font-size: 1.1rem; color: var(--dark-gray); font-weight: 400; margin-bottom: 0.5em;}
-
-        p {
-            margin-bottom: 1em;
+        h2::after { /* Animated underline */
+            content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 5px;
+            background: var(--gradient-secondary); border-radius: 3px;
+            transition: width 0.6s var(--transition-bezier) 0.5s;
         }
+        section.visible h2::after { width: 80%; }
 
-        a {
-            color: var(--secondary-color);
-            text-decoration: none;
-            transition: color var(--transition-speed) ease;
-        }
+        h3 { font-size: 1.5rem; color: var(--secondary-accent); }
+        h4 { font-size: 1.1rem; color: var(--text-medium); font-weight: 400; margin-bottom: 0.6em;}
 
-        a:hover {
-            color: var(--accent-color);
-        }
+        p { margin-bottom: 1.2em; color: var(--text-medium); }
 
-        ul {
-            list-style: none;
-            padding-left: 20px;
-        }
+        a { color: var(--secondary-accent); text-decoration: none; transition: color var(--transition-speed) ease, transform var(--transition-speed) ease; }
+        a:hover { color: var(--primary-accent); transform: translateY(-2px); }
 
-        li {
-            margin-bottom: 0.8em;
-            position: relative;
-        }
-
-        li::before {
-            content: '•';
-            color: var(--secondary-color);
-            font-weight: bold;
-            display: inline-block;
-            width: 1em;
-            margin-left: -1.3em;
+        ul { list-style: none; padding-left: 28px; }
+        li { margin-bottom: 1.1em; position: relative; color: var(--text-medium); }
+        li i.fa-li { /* Font Awesome list icons */
             position: absolute;
-            top: 1px;
+            left: -28px;
+            top: 5px;
+            color: var(--secondary-accent);
+            font-size: 1.1em;
+            line-height: inherit; /* Align with text */
+            transition: transform 0.3s ease;
         }
+        li:hover i.fa-li { transform: scale(1.2) rotate(-10deg); }
 
+
+        /* --- Section Styling & Dividers --- */
         section {
-            padding: 60px 0;
+            padding: 90px 0;
+            position: relative;
+            overflow: hidden; /* Important for clip-path */
+            z-index: 1;
         }
+        section:nth-of-type(even) { background-color: var(--bg-medium); } /* Alternate background */
 
-        section:nth-of-type(even) {
-             background-color: var(--light-gray);
-        }
+         /* Angled Divider - Top of Even Sections */
+         section:nth-of-type(even)::before {
+             content: '';
+             position: absolute;
+             top: 0;
+             left: 0;
+             width: 100%;
+             height: 80px; /* Divider height */
+             background: var(--bg-dark); /* Match previous section bg */
+             clip-path: polygon(0 0, 100% 0, 100% 100%, 0 calc(100% - 30px)); /* Gentle Angle */
+             z-index: 1;
+             transform: translateY(-1px); /* Avoid tiny gap */
+         }
 
-        /* --- Header / Hero --- */
+         /* Angled Divider - Top of Odd Sections (Except first one - Education) */
+         section:nth-of-type(odd):not(:first-of-type)::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background: var(--bg-medium); /* Match previous section bg */
+            clip-path: polygon(0 0, 100% 30px, 100% 100%, 0 100%); /* Reversed Angle */
+            z-index: 1;
+             transform: translateY(-1px);
+         }
+
+
+        /* --- Hero Section --- */
         .hero {
-            background: linear-gradient(rgba(44, 62, 80, 0.8), rgba(44, 62, 80, 0.9)), url('https://via.placeholder.com/1500x800/2c3e50/ecf0f1?text=Modern+Background') center center/cover no-repeat; /* Placeholder background */
-            color: var(--bg-color);
-            padding: 100px 0 80px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             text-align: center;
+            background: radial-gradient(ellipse at bottom, var(--bg-medium) 0%, var(--bg-dark) 100%);
+            position: relative;
+            overflow: hidden;
+            padding: 20px;
+        }
+        .hero::before { /* Subtle animated pattern */
+            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: radial-gradient(var(--bg-light) 1px, transparent 1px);
+            background-size: 20px 20px;
+            opacity: 0.1;
+            animation: backgroundZoom 60s infinite linear;
+             z-index: 0;
+        }
+        @keyframes backgroundZoom {
+             from { background-size: 20px 20px; }
+             to { background-size: 40px 40px; }
         }
 
         .hero h1 {
-            color: var(--bg-color);
-            margin-bottom: 0.1em;
+            color: var(--text-light); font-size: 4.5rem;
+            text-shadow: 3px 3px 15px rgba(0,0,0,0.5);
+             position: relative; z-index: 1; /* Above pattern */
+             animation: slideInFromTop 1s ease-out forwards;
+             opacity: 0;
         }
 
-        .hero p {
-            font-size: 1.2rem;
-            color: var(--light-gray);
-            margin-bottom: 1.5em;
-        }
+        /* Typewriter effect container */
+        .hero .subtitle {
+             font-size: 1.6rem; color: var(--secondary-accent); margin: 15px 0 30px 0;
+             font-family: var(--font-code); display: inline-block; /* Important for border */
+             border-right: 2px solid var(--secondary-accent); /* Blinking cursor */
+             white-space: nowrap; overflow: hidden;
+             animation: typewriter 4s steps(40) 1s forwards, blinkCursor 0.75s step-end infinite;
+             animation-delay: 1s; /* Start after H1 */
+             opacity: 0; /* Start hidden */
+             max-width: 0; /* Start hidden */
+             position: relative; z-index: 1;
+         }
 
-        .contact-info a {
-            color: var(--light-gray);
-            margin: 0 15px;
-            transition: color var(--transition-speed) ease;
-            font-size: 1rem;
-        }
-        .contact-info a:hover {
-            color: var(--secondary-color);
-        }
-        .contact-info i { /* For potential icons */
-            margin-right: 5px;
-        }
+         @keyframes typewriter {
+             from { max-width: 0; opacity: 1; }
+             to { max-width: 100%; opacity: 1; } /* Adjust 100% if text is longer */
+         }
+         @keyframes blinkCursor {
+             from, to { border-color: transparent; }
+             50% { border-color: var(--secondary-accent); }
+         }
 
+        .hero .contact-info {
+             margin-top: 25px; display: flex; gap: 25px; justify-content: center; flex-wrap: wrap;
+             position: relative; z-index: 1;
+             opacity: 0;
+             animation: slideInFromBottom 1s ease-out 2.5s forwards; /* Delay after typewriter */
+         }
+        .hero .contact-info a {
+             color: var(--text-medium); font-size: 1rem;
+             display: inline-flex; align-items: center; gap: 8px;
+         }
+         .hero .contact-info a:hover { color: var(--secondary-accent); }
+         .hero .contact-info i { font-size: 1.2em; }
+
+
+        /* Scroll down indicator */
+        .scroll-down-indicator {
+            position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+            color: var(--text-medium); font-size: 2.5rem; z-index: 1;
+            opacity: 0; animation: fadeInBounce 2s infinite 3.5s forwards;
+        }
+         @keyframes fadeInBounce {
+             0% { opacity: 0; transform: translate(-50%, 10px); }
+             20% { opacity: 1; transform: translate(-50%, -5px); }
+             40% { transform: translate(-50%, 0); }
+             100% { opacity: 1; transform: translate(-50%, 0); } /* Stay visible */
+         }
+         @keyframes bounceOnly { /* Reusable bounce part */
+             0%, 100% { transform: translateY(0); }
+             50% { transform: translateY(-10px); }
+         }
+         .scroll-down-indicator:hover { animation-play-state: paused; } /* Optional: pause bounce on hover */
 
         /* --- Navigation --- */
-        nav {
-            background-color: var(--primary-color);
-            padding: 1rem 0;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        #navbar {
+            background-color: rgba(26, 34, 56, 0.85); /* Darker semi-transparent */
+            backdrop-filter: blur(12px); padding: 0.8rem 0; position: sticky; top: 0;
+            z-index: 1000; box-shadow: 0 3px 20px rgba(0,0,0,0.4);
+            transition: top 0.4s ease-in-out, background-color 0.3s ease;
+            border-bottom: 1px solid rgba(78, 205, 196, 0.1);
         }
+         body.scrolled #navbar { background-color: rgba(26, 34, 56, 0.95); } /* More opaque on scroll */
+         body.scroll-down #navbar { top: -100px; }
 
-        nav .container {
-            display: flex;
-            justify-content: center; /* Center nav items */
-            align-items: center;
+        #navbar .container { display: flex; justify-content: center; align-items: center; }
+        #navbar ul { list-style: none; display: flex; padding-left: 0; }
+        #navbar ul li { margin: 0 18px; padding: 0; } /* Remove padding from li */
+        #navbar ul li::before { content: none; }
+        #navbar ul li a {
+            color: var(--text-light); text-decoration: none; font-weight: 600;
+            padding: 10px 18px; border-radius: 25px;
+            transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease, transform var(--transition-speed) ease;
+            position: relative; overflow: hidden; display: flex; align-items: center; gap: 8px; /* For icons */
+            font-size: 0.95rem;
         }
+        #navbar ul li a i { font-size: 0.9em; opacity: 0.7; } /* Subtle icon */
 
-        nav ul {
-            list-style: none;
-            display: flex;
-            padding-left: 0; /* Override default ul padding */
-        }
-
-        nav ul li {
-            margin: 0 15px;
-        }
-        nav ul li::before {
-            content: none; /* Remove list bullets */
-        }
-
-        nav ul li a {
-            color: var(--bg-color);
-            text-decoration: none;
-            font-weight: 600;
-            padding: 5px 10px;
-            border-radius: 5px;
-            transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
-        }
-
-        nav ul li a:hover, nav ul li a.active {
-            background-color: var(--secondary-color);
-            color: var(--bg-color);
+        #navbar ul li a:hover, #navbar ul li a.active {
+            background-color: var(--primary-accent); color: #fff; transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(255, 107, 107, 0.3);
         }
 
 
-        /* --- Experience & Education Cards --- */
-        .timeline-item {
-            background: var(--card-bg);
-            padding: 25px;
-            margin-bottom: 30px;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            border-left: 5px solid var(--secondary-color);
-            transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+        /* --- Content Card Styling --- */
+        .content-card {
+            background: linear-gradient(145deg, rgba(42, 58, 94, 0.7), rgba(26, 34, 56, 0.8)); /* Subtle gradient */
+            backdrop-filter: blur(8px);
+            padding: 35px; margin-bottom: 45px;
+            border-radius: var(--border-radius); box-shadow: var(--box-shadow-light);
+            border: 1px solid rgba(78, 205, 196, 0.15);
+            border-left: 8px solid; border-image-slice: 1;
+            border-image-source: var(--gradient-secondary); /* Default: Experience gradient */
+            transition: transform var(--transition-speed) var(--transition-bezier),
+                        box-shadow var(--transition-speed) var(--transition-bezier);
+            position: relative; overflow: hidden;
         }
+        /* Vary border for sections */
+         #education .content-card { border-image-source: var(--gradient-primary); }
+         #leadership .content-card, #activities .content-card {
+             border-image-source: linear-gradient(135deg, var(--tertiary-accent), #a854ff); /* Yellow to Purple */
+         }
 
-        .timeline-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-        }
+        .content-card::before { /* Inner glow effect */
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(78, 205, 196, 0.08) 0%, transparent 40%);
+             opacity: 0; transition: opacity 0.5s ease; transform: scale(0.5);
+         }
+         .content-card:hover::before { opacity: 1; transform: scale(1); }
 
-        .item-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            flex-wrap: wrap; /* Allow wrapping on small screens */
-            margin-bottom: 10px;
+        .content-card:hover {
+             transform: translateY(-10px) scale(1.03);
+             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+         }
+        .card-header {
+             display: flex; justify-content: space-between; align-items: baseline;
+             flex-wrap: wrap; margin-bottom: 18px; gap: 10px;
+         }
+        .card-header h3 {
+             margin-bottom: 0.1em; display: flex; align-items: center; gap: 10px; /* Title with icon */
         }
+        .card-header h3 i { color: var(--primary-accent); font-size: 1.1em; } /* Icon next to H3 */
+        .card-header .date {
+            font-weight: 700; color: var(--tertiary-accent);
+            background-color: rgba(254, 202, 87, 0.1); padding: 5px 12px;
+            border-radius: 5px; font-size: 0.9em; white-space: nowrap;
+            font-family: var(--font-code); letter-spacing: 0.5px;
+        }
+         .content-card ul { padding-left: 5px; } /* Reduce extra padding */
+         .content-card li { font-size: 1rem; color: var(--text-light); /* Make text brighter */ }
 
-        .item-header h3 {
-            margin-bottom: 0.2em; /* Reduce space below title */
-        }
-
-        .item-header .date {
-            font-weight: 600;
-            color: var(--primary-color);
-            background-color: var(--light-gray);
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 0.9em;
-            white-space: nowrap; /* Prevent date from wrapping */
-        }
-
-        /* --- Skills --- */
-        #skills ul {
-            padding-left: 0; /* Remove padding for skills list */
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px; /* Spacing between skill tags */
-        }
-
-        #skills li {
-            background-color: var(--secondary-color);
-            color: var(--bg-color);
-            padding: 8px 15px;
-            border-radius: 20px; /* Pill shape */
-            font-size: 0.95em;
-            font-weight: 400;
-            transition: background-color var(--transition-speed) ease, transform var(--transition-speed) ease;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        #skills li:hover {
-            background-color: var(--primary-color);
-            transform: translateY(-2px);
-        }
-
-        #skills li::before {
-            content: none; /* Remove default bullet */
-        }
+        /* --- Skills Section Styling --- */
+        #skills { background-color: var(--bg-light); } /* Distinct BG for Skills */
+        .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 35px; }
 
         .skills-category {
-            margin-bottom: 25px;
+             background: rgba(26, 34, 56, 0.6); padding: 30px;
+             border-radius: var(--border-radius); box-shadow: var(--box-shadow-light);
+             border: 1px solid rgba(255, 107, 107, 0.1);
+             border-top: 5px solid var(--primary-accent);
+             transition: transform 0.3s ease;
         }
-        .skills-category h4 {
-            margin-bottom: 15px;
-            color: var(--primary-color);
-            font-weight: 600;
-            border-bottom: 2px solid var(--light-gray);
-            padding-bottom: 5px;
-            display: inline-block;
-        }
+         .skills-category:hover { transform: translateY(-5px); }
 
+        #skills h4 {
+            color: var(--primary-accent); margin-bottom: 25px; font-size: 1.35rem;
+            border-bottom: 1px solid rgba(255, 107, 107, 0.2); padding-bottom: 10px;
+            display: flex; align-items: center; gap: 12px;
+        }
+        #skills h4 i { font-size: 1.2em; opacity: 0.8; } /* Icon in category title */
+
+        #skills ul { padding-left: 0; display: flex; flex-wrap: wrap; gap: 15px; }
+        #skills li {
+             background: var(--gradient-secondary); color: var(--bg-dark);
+             padding: 9px 20px; border-radius: 25px;
+             font-size: 0.95rem; font-weight: 600;
+             transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease, background 0.5s ease;
+             box-shadow: 0 3px 8px rgba(0,0,0,0.2); cursor: default;
+             transform: scale(0); opacity: 0; animation-fill-mode: both;
+         }
+         #skills li::before { content: none; } /* No bullets */
+
+        #skills.visible .skills-category ul li {
+             animation: scaleUpPunch 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; /* Punchy animation */
+         }
+        /* Stagger delay remains same as before, applied via inline style in HTML potentially */
+        #skills li:nth-child(1) { animation-delay: 0.1s; } #skills li:nth-child(2) { animation-delay: 0.15s; }
+        #skills li:nth-child(3) { animation-delay: 0.2s; } #skills li:nth-child(4) { animation-delay: 0.25s; }
+        #skills li:nth-child(5) { animation-delay: 0.3s; } #skills li:nth-child(6) { animation-delay: 0.35s; }
+        #skills li:nth-child(7) { animation-delay: 0.4s; } #skills li:nth-child(8) { animation-delay: 0.45s; }
+        #skills li:nth-child(9) { animation-delay: 0.5s; } #skills li:nth-child(10) { animation-delay: 0.55s; }
+        /* etc. */
+
+
+         #skills li:hover {
+             transform: translateY(-4px) scale(1.08);
+             box-shadow: 0 6px 18px rgba(78, 205, 196, 0.4);
+             background: var(--gradient-primary); color: var(--text-light);
+         }
 
         /* --- Footer --- */
         footer {
-            background-color: var(--primary-color);
-            color: var(--light-gray);
-            text-align: center;
-            padding: 30px 0;
-            margin-top: 40px; /* Add some space before footer */
+            background-color: var(--bg-dark); /* Match darkest bg */
+            color: var(--text-medium); text-align: center; padding: 50px 0; margin-top: 0; /* Removed margin due to divider */
+            position: relative; z-index: 1; /* Above potential final divider */
+             border-top: 1px solid rgba(78, 205, 196, 0.1);
         }
+        footer p { margin-bottom: 0.5em; font-size: 0.9rem; }
+         footer a { color: var(--tertiary-accent); font-weight: 600; }
+         footer a:hover { color: var(--primary-accent); }
 
-        footer p {
-            margin-bottom: 0;
-        }
-
-        /* --- Animations --- */
-        .fade-in-element {
+        /* --- Animation Classes & Keyframes --- */
+        .animate-on-scroll {
             opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            transition: opacity 0.9s ease-out, transform 0.9s ease-out;
+            transition-delay: 0.2s; /* Add slight delay to cards/elements */
         }
 
-        .fade-in-element.is-visible {
-            opacity: 1;
-            transform: translateY(0);
+        /* Different entry animations */
+        .slide-in-left { transform: translateX(-100px); }
+        .slide-in-right { transform: translateX(100px); }
+        .slide-in-up { transform: translateY(70px); }
+        .scale-in { transform: scale(0.8); }
+
+        section.visible .animate-on-scroll,
+        .content-card.visible { /* Added .visible to card for clarity */
+             opacity: 1; transform: translate(0, 0) scale(1);
+        }
+
+
+        @keyframes scaleUpPunch { /* New skill animation */
+            0% { transform: scale(0); opacity: 0; }
+            60% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+         @keyframes slideInFromTop {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+         @keyframes slideInFromBottom {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
         /* --- Responsive Design --- */
+        @media (max-width: 1024px) {
+             h1 { font-size: 3.5rem; }
+             h2 { font-size: 2.2rem; }
+         }
+
         @media (max-width: 768px) {
-            h1 { font-size: 2.2rem; }
-            h2 { font-size: 1.7rem; }
-            h3 { font-size: 1.2rem; }
+             h1 { font-size: 2.8rem; }
+             .hero h1 { font-size: 3rem; } /* Keep hero H1 larger */
+             .hero .subtitle { font-size: 1.3rem; }
+             h2 { font-size: 2rem; margin-bottom: 1.5em;}
+             h3 { font-size: 1.4rem; }
+             body { font-size: 15px; }
 
-            nav ul {
-                flex-direction: column; /* Stack nav items */
-                align-items: center;
-            }
-            nav ul li {
-                 margin: 8px 0; /* Add vertical spacing */
-            }
+             #navbar ul { /* Basic wrapping for nav */
+                flex-wrap: wrap; justify-content: center; padding: 0 10px; gap: 5px 15px;
+             }
+             #navbar ul li { margin: 0; }
 
-            .hero {
-                padding: 80px 0 60px;
-            }
+             .card-header { flex-direction: column; align-items: flex-start; }
+             .card-header .date { margin-top: 8px; }
 
-            .item-header {
-                flex-direction: column; /* Stack title and date */
-                align-items: flex-start;
-            }
-             .item-header .date {
-                margin-top: 5px; /* Add space between title and date */
-            }
+            section { padding: 70px 0; }
+            /* Adjust divider height on mobile */
+            section:nth-of-type(even)::before,
+            section:nth-of-type(odd):not(:first-of-type)::before { height: 60px; }
+             section:nth-of-type(even)::before { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 calc(100% - 20px)); }
+             section:nth-of-type(odd):not(:first-of-type)::before { clip-path: polygon(0 0, 100% 20px, 100% 100%, 0 100%); }
 
-            section {
-                padding: 40px 0;
-            }
-
-            li {
-               font-size: 0.95rem; /* Slightly smaller text on mobile */
-            }
-             li::before {
-                margin-left: -1.1em; /* Adjust bullet position */
-            }
+             /* Make horizontal slides default to vertical on mobile */
+            .slide-in-left, .slide-in-right { transform: translateY(60px); }
+            section.visible .animate-on-scroll,
+            .content-card.visible { transform: translateY(0) scale(1); }
         }
 
         @media (max-width: 480px) {
-            h1 { font-size: 1.8rem; }
-            h2 { font-size: 1.5rem; }
+             h1 { font-size: 2.2rem; }
+             .hero h1 { font-size: 2.5rem; }
+             h2 { font-size: 1.7rem; }
+             .hero .subtitle { font-size: 1.1rem; animation-duration: 3s; } /* Slow down typing slightly */
+             .container { padding: 0 15px; }
 
-             .contact-info {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-            }
-            .contact-info a {
-                margin: 5px 0;
-            }
+             .hero .contact-info { flex-direction: column; align-items: center; gap: 15px; }
 
-            #skills li {
-                font-size: 0.9rem;
-                padding: 6px 12px;
-            }
-        }
+            .content-card { padding: 25px; margin-bottom: 35px;}
+             #skills .skills-grid { grid-template-columns: 1fr; } /* Stack skill categories */
+             #skills li { font-size: 0.9rem; padding: 8px 16px; }
+
+            section { padding: 60px 0; }
+             section:nth-of-type(even)::before,
+             section:nth-of-type(odd):not(:first-of-type)::before { height: 50px; }
+         }
 
     </style>
 </head>
@@ -347,25 +454,28 @@
     <header class="hero">
         <div class="container">
             <h1>Subhan Sajid</h1>
-            <p>Management Information Systems Student | Aspiring Cybersecurity Professional</p>
+            <!-- Wrap subtitle for animation -->
+            <div><p class="subtitle">// Building Bridges Between Tech & Business //</p></div>
             <div class="contact-info">
-                <a href="mailto:subhansajid360@gmail.com">subhansajid360@gmail.com</a> |
-                <span>(832) 757-3491</span> |
-                <span>Houston, Texas 77407</span> |
-                <a href="https://www.linkedin.com/in/subhanmsajid" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <a href="mailto:subhansajid360@gmail.com"><i class="fas fa-envelope"></i> subhansajid360@gmail.com</a>
+                 <a><i class="fas fa-phone"></i> (832) 757-3491</a>
+                 <a><i class="fas fa-map-marker-alt"></i> Houston, TX</a>
+                <a href="https://www.linkedin.com/in/subhanmsajid" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                <a href="https://github.com/" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i> GitHub</a> {/* Add Your Github Link */}
             </div>
         </div>
+         <a href="#education" aria-label="Scroll down" class="scroll-down-indicator"><i class="fas fa-chevron-down"></i></a>
     </header>
 
     <!-- Navigation -->
     <nav id="navbar">
         <div class="container">
              <ul>
-                <li><a href="#education">Education</a></li>
-                <li><a href="#experience">Experience</a></li>
-                <li><a href="#leadership">Leadership</a></li>
-                <li><a href="#activities">Activities</a></li>
-                <li><a href="#skills">Skills</a></li>
+                <li><a href="#education"><i class="fas fa-graduation-cap"></i> Education</a></li>
+                <li><a href="#experience"><i class="fas fa-briefcase"></i> Experience</a></li>
+                <li><a href="#leadership"><i class="fas fa-users"></i> Leadership</a></li>
+                 <li><a href="#activities"><i class="fas fa-laptop-code"></i> Projects</a></li>
+                <li><a href="#skills"><i class="fas fa-cogs"></i> Skills</a></li>
             </ul>
         </div>
     </nav>
@@ -373,195 +483,156 @@
     <!-- Education Section -->
     <section id="education">
         <div class="container">
-            <h2>Education</h2>
-            <div class="timeline-item fade-in-element">
-                <div class="item-header">
-                    <h3>C. T. Bauer College of Business, University of Houston</h3>
+            <h2 class="animate-on-scroll slide-in-up"><i class="fas fa-university"></i> Academic Foundation</h2>
+            <article class="content-card animate-on-scroll scale-in">
+                <div class="card-header">
+                    <h3><i class="fas fa-building-columns"></i> University of Houston, Bauer College</h3>
                     <span class="date">Expected May 2024</span>
                 </div>
-                <h4>Houston, Texas</h4>
-                <ul>
-                    <li>Bauer College of Business: BBA in Management Information Systems</li>
-                    <li>Cumulative GPA: 3.65/4.00</li>
-                    <li>Honors: Dean's List (May 2022-2023)</li>
+                <h4>BBA - Management Information Systems (MIS)</h4>
+                 <ul class="fa-ul"> {/* Use Font Awesome list */}
+                     <li><span class="fa-li"><i class="fas fa-book-open"></i></span>Focused on synergizing technology solutions with strategic business goals.</li>
+                    <li><span class="fa-li"><i class="fas fa-chart-line"></i></span>Cumulative GPA: 3.65/4.00 - Consistently high academic achievement.</li>
+                    <li><span class="fa-li"><i class="fas fa-award"></i></span>Honors: Dean's List Recognition (May 2022 - May 2023).</li>
+                    <li><span class="fa-li"><i class="fas fa-laptop-code"></i></span>Key Coursework: Database Management, Systems Analysis, Network Security, Python Programming.</li>
                 </ul>
-            </div>
+            </article>
         </div>
     </section>
 
     <!-- Professional Experience Section -->
     <section id="experience">
         <div class="container">
-            <h2>Professional Experience</h2>
+            <h2 class="animate-on-scroll slide-in-up"><i class="fas fa-briefcase"></i> Professional Journey</h2>
 
-            <div class="timeline-item fade-in-element">
-                <div class="item-header">
-                    <h3>Ernst & Young (EY) - Cybersecurity Consulting Intern</h3>
-                    <span class="date">June 2023 – August 2023</span>
+            <article class="content-card animate-on-scroll slide-in-left">
+                <div class="card-header">
+                    <h3><i class="fas fa-shield-alt"></i> Ernst & Young (EY) - Cybersecurity Consulting Intern</h3>
+                    <span class="date">Summer 2023</span>
                 </div>
-                <h4>Houston, Texas</h4>
-                <ul>
-                    <li>Devised and executed an Azure Active Directory automatic security assessment using PowerShell and Microsoft Graph API.</li>
-                    <li>Boosted IAM assessment efficiency by 200%, enabling consultants to flag vulnerabilities automatically for newly acquired clients.</li>
-                    <li>Engaged with a team of 6 to deploy the assessment solution, uncovering 15 Azure Active Directory vulnerabilities in the environment to mitigate privilege escalation risks in alignment with Microsoft Security Framework standards.</li>
-                    <li>Automated PowerBI dashboards to visually demonstrate key security statistics with client executives clearly and transparently.</li>
+                 <ul class="fa-ul">
+                    <li><span class="fa-li"><i class="fas fa-terminal"></i></span>Developed automated Azure AD security assessments via PowerShell & Graph API.</li>
+                    <li><span class="fa-li"><i class="fas fa-rocket"></i></span>Boosted IAM assessment efficiency by 200% for client onboarding processes.</li>
+                    <li><span class="fa-li"><i class="fas fa-users-cog"></i></span>Collaborated with a team of 6 to deploy assessment tools, uncovering 15 critical vulnerabilities.</li>
+                    <li><span class="fa-li"><i class="fas fa-chart-pie"></i></span>Created dynamic Power BI dashboards visualizing key security metrics for C-suite executives.</li>
                 </ul>
-            </div>
+            </article>
 
-            <div class="timeline-item fade-in-element">
-                <div class="item-header">
-                    <h3>PricewaterhouseCoopers (PwC) - Digital Assurance and Transparency Intern</h3>
-                    <span class="date">August 2022 – December 2022</span>
+            <article class="content-card animate-on-scroll slide-in-right">
+                <div class="card-header">
+                     <h3><i class="fas fa-clipboard-check"></i> PwC - Digital Assurance & Transparency Intern</h3>
+                    <span class="date">Fall 2022</span>
                 </div>
-                <h4>Houston, TX</h4>
-                 <ul>
-                    <li>Utilized Alteryx and Tableau to recreate 5 of our client's automations from the ground according to SOX standards.</li>
-                    <li>Reconstructed systems and designed tailored solutions to correct client controls on a portfolio containing 1100+ holdings.</li>
-                    <li>Audited client IT controls and financial reporting automations rigorously to ensure efficiency without compromising accuracy.</li>
-                    <li>Engaged closely with clients and cross-functional teams to discuss client requirements, conduct gap analyses, and implement optimized solutions aligned with client objectives and PCAOB regulatory requirements for publicly facing investor reports.</li>
-                </ul>
-            </div>
+                 <ul class="fa-ul">
+                    <li><span class="fa-li"><i class="fas fa-project-diagram"></i></span>Re-engineered client automation workflows using Alteryx & Tableau, ensuring SOX compliance.</li>
+                     <li><span class="fa-li"><i class="fas fa-wrench"></i></span>Designed and implemented remediation strategies for IT controls across a 1100+ holding portfolio.</li>
+                    <li><span class="fa-li"><i class="fas fa-search"></i></span>Executed rigorous ITGC audits, ensuring the accuracy and efficiency of financial reporting systems.</li>
+                    <li><span class="fa-li"><i class="fas fa-comments"></i></span>Liaised between client stakeholders and technical teams to align solutions with business and regulatory needs (PCAOB).</li>
+                 </ul>
+            </article>
 
-             <div class="timeline-item fade-in-element">
-                <div class="item-header">
-                    <h3>Mobile Dream Inc - Audio Solutions Expert</h3>
-                     <span class="date">November 2021 – August 2022</span>
+             <article class="content-card animate-on-scroll slide-in-left">
+                <div class="card-header">
+                     <h3><i class="fas fa-headset"></i> Mobile Dream Inc - Audio Solutions Expert</h3>
+                    <span class="date">Nov 2021 – Aug 2022</span>
                 </div>
-                 <h4>Houston, TX</h4>
-                <ul>
-                    <li>Leveraged in-depth product knowledge to provide tailored audio solutions, resulting in a 30% increase in customer satisfaction ratings.</li>
-                    <li>Excelled in a dynamic sales environment, meeting and surpassing sales quotas while upholding brand integrity and customer trust.</li>
+                 <ul class="fa-ul">
+                     <li><span class="fa-li"><i class="fas fa-lightbulb"></i></span>Provided bespoke audio solutions leveraging deep product knowledge, increasing customer satisfaction by 30%.</li>
+                    <li><span class="fa-li"><i class="fas fa-dollar-sign"></i></span>Exceeded sales targets consistently in a dynamic environment while championing brand integrity.</li>
                 </ul>
-            </div>
+            </article>
         </div>
     </section>
 
     <!-- Leadership Experience Section -->
     <section id="leadership">
         <div class="container">
-             <h2>Leadership Experience</h2>
+             <h2 class="animate-on-scroll slide-in-up"><i class="fas fa-users"></i> Leadership & Community</h2>
 
-             <div class="timeline-item fade-in-element">
-                <div class="item-header">
-                    <h3>Muslim Interscholastic Tournament - Logistics Chair & Board Member</h3>
-                    <span class="date">January 2024 - Present</span>
+             <article class="content-card animate-on-scroll slide-in-right">
+                <div class="card-header">
+                    <h3><i class="fas fa-calendar-alt"></i> Muslim Interscholastic Tournament - Logistics Chair & Board Member</h3>
+                    <span class="date">Jan 2024 - Present</span>
                 </div>
-                <ul>
-                    <li>Coordinated a student tournament with 10,000+ participants, while actively contributing to strategic planning in board meetings for holistic organizational development and future event planning for further community development among religious minorities.</li>
-                    <li>Served as a passionate advocate for youth leadership, inspiring others to join in advancing the world and growing to their potential.</li>
+                 <ul class="fa-ul">
+                    <li><span class="fa-li"><i class="fas fa-sitemap"></i></span>Orchestrating logistics for a national student tournament engaging over 10,000 participants.</li>
+                    <li><span class="fa-li"><i class="fas fa-bullseye"></i></span>Contributing to long-term strategic planning and organizational growth within the executive board.</li>
+                    <li><span class="fa-li"><i class="fas fa-hands-helping"></i></span>Passionate advocate for youth empowerment and fostering community development.</li>
                 </ul>
-            </div>
+            </article>
 
-             <div class="timeline-item fade-in-element">
-                <div class="item-header">
-                     <h3>MIS 4397 Business Systems Consulting - Team Lead</h3>
-                     <span class="date">August 2023 - December 2023</span>
+             <article class="content-card animate-on-scroll slide-in-left">
+                <div class="card-header">
+                     <h3><i class="fas fa-chalkboard-teacher"></i> MIS 4397 Business Systems Consulting - Team Lead</h3>
+                     <span class="date">Fall 2023</span>
                 </div>
-                <ul>
-                    <li>Led weekly client meetings to present progress updates, discuss client objectives and constraints, while effectively managing expectations.</li>
-                    <li>Coordinated a team of 6 to develop a web-based dashboard using PowerBI automations to present client progress for investors.</li>
+                 <ul class="fa-ul">
+                     <li><span class="fa-li"><i class="fas fa-user-friends"></i></span>Led a diverse team of 6 students through a semester-long, client-focused consulting engagement.</li>
+                    <li><span class="fa-li"><i class="fas fa-comments-dollar"></i></span>Managed client relationship, ensuring clear communication, expectation management, and timely deliverables.</li>
+                    <li><span class="fa-li"><i class="fas fa-tachometer-alt"></i></span>Spearheaded the development of an interactive Power BI dashboard visualizing project KPIs for investors.</li>
                 </ul>
-            </div>
+            </article>
          </div>
     </section>
 
-    <!-- Extracurricular Activities Section -->
+    <!-- Extracurricular Activities / Projects Section -->
     <section id="activities">
          <div class="container">
-            <h2>Extracurricular Activities</h2>
+            <h2 class="animate-on-scroll slide-in-up"><i class="fas fa-flask"></i> Projects & Exploration</h2>
 
-            <div class="timeline-item fade-in-element">
-                <div class="item-header">
-                    <h3>Hack The Box - CTF Participant</h3>
-                    <span class="date">June 2022 - Present</span>
+            <article class="content-card animate-on-scroll slide-in-right">
+                <div class="card-header">
+                     <h3><i class="fas fa-flag"></i> Cybersecurity Skills Development (CTFs / Hack The Box)</h3>
+                    <span class="date">Ongoing</span>
                 </div>
-                <ul>
-                    <li>Conducted penetration tests on simulated Linux systems and web environments with Nmap, Wireshark, and Aircrack-ng.</li>
-                    <li>Discovered exploits and weak permissions by utilizing SQL injection, XSS, and various privilege escalation techniques.</li>
+                 <ul class="fa-ul">
+                    <li><span class="fa-li"><i class="fas fa-search-plus"></i></span>Actively honing penetration testing skills via Capture The Flag events and Hack The Box labs.</li>
+                     <li><span class="fa-li"><i class="fas fa-network-wired"></i></span>Hands-on practice with Nmap, Wireshark, Aircrack-ng, Metasploit in simulated environments.</li>
+                    <li><span class="fa-li"><i class="fas fa-bug"></i></span>Identifying and exploiting vulnerabilities: SQL Injection, XSS, Privilege Escalation, Web App Flaws.</li>
                  </ul>
-            </div>
+            </article>
 
-             <div class="timeline-item fade-in-element">
-                <div class="item-header">
-                    <h3>The Odin Project - Participant</h3>
-                    <span class="date">August 2024 - Present</span> <!-- Note: This date seems future/aspirational -->
+             <article class="content-card animate-on-scroll slide-in-left">
+                <div class="card-header">
+                    <h3><i class="fab fa-git-alt"></i> Full-Stack Web Projects (The Odin Project)</h3>
+                    <span class="date">Ongoing</span>
                 </div>
-                 <ul>
-                     <li>Developed modern web applications from scratch with JS, HTML, and CSS while utilizing GIT and launching remote servers to host them.</li>
-                </ul>
-            </div>
-
-            <div class="timeline-item fade-in-element">
-                 <div class="item-header">
-                    <h3>Maryam Islamic Center - Youth Team Mentor</h3>
-                     <span class="date">May 2018 - Present</span>
-                </div>
-                 <ul>
-                    <li>Proactively learned while mentoring the youth team on life skills, fostering a culture of continuous learning within the community.</li>
-                    <li>Volunteered in outreach projects across the Houston area to strengthen bonds citywide while promoting positive social change.</li>
-                </ul>
-            </div>
-
-             <div class="timeline-item fade-in-element">
-                <div class="item-header">
-                     <h3>Management Information Systems Student Organization - Mentor</h3>
-                    <span class="date">January 2024 – May 2024</span>
-                 </div>
-                 <ul>
-                    <li>Engaged in proactive networking by facilitating meetings with firms in the IT sector, fostering valuable connections and industry insights.</li>
-                     <li>Mentored students on a variety of topics related to job hunting, resume reviews, and difficult courses through my personal experiences.</li>
+                 <ul class="fa-ul">
+                     <li><span class="fa-li"><i class="fab fa-js-square"></i></span>Developing responsive web applications from scratch using JavaScript, HTML, CSS, and backend frameworks (e.g., Node.js/Express - *adjust as applicable*).</li>
+                     <li><span class="fa-li"><i class="fas fa-code-branch"></i></span>Proficient with Git version control workflows for collaborative and personal projects.</li>
+                     <li><span class="fa-li"><i class="fas fa-server"></i></span>Deploying applications to cloud platforms and managing remote servers.</li>
                  </ul>
-             </div>
-        </div>
+             </article>
+
+             {/* Combine Community under Leadership or keep separate? Let's keep it lean and integrate here or leadership. Integrated above now. */}
+
+         </div>
     </section>
 
-    <!-- Skills and Interests Section -->
+    <!-- Skills Section -->
     <section id="skills">
         <div class="container">
-            <h2>Skills and Interests</h2>
+            <h2 class="animate-on-scroll slide-in-up"><i class="fas fa-cogs"></i> My Toolkit</h2>
 
-            <div class="skills-category fade-in-element">
-                 <h4>Programming Languages</h4>
-                 <ul>
-                     <li>Python</li>
-                     <li>SQL</li>
-                     <li>Java</li>
-                     <li>Javascript</li>
-                     <li>HTML/CSS</li>
-                     <li>Powershell</li>
-                     <li>C++</li>
-                     <li>MATLAB</li>
-                </ul>
-            </div>
+            <div class="skills-grid">
+                <div class="skills-category animate-on-scroll slide-in-up">
+                     <h4><i class="fas fa-code"></i> Languages</h4>
+                     <ul><li>Python</li><li>SQL</li><li>JavaScript</li><li>HTML5</li><li>CSS3</li><li>PowerShell</li><li>Bash/Z Shell</li><li>Java</li><li>C++</li><li>MATLAB</li></ul>
+                </div>
 
-            <div class="skills-category fade-in-element">
-                 <h4>Software Tools</h4>
-                 <ul>
-                     <li>Azure Active Directory</li>
-                     <li>Kali Linux</li>
-                     <li>Aircrack-ng</li> <!-- Corrected from resume image -->
-                     <li>Nmap</li>
-                     <li>Z Shell</li>
-                     <li>Unix</li>
-                     <li>PowerBI</li>
-                     <li>Alteryx</li> <!-- Added from PwC exp -->
-                     <li>Tableau</li> <!-- Added from PwC exp -->
-                     <li>Git</li> <!-- Added from Odin Project exp -->
-                </ul>
-            </div>
+                <div class="skills-category animate-on-scroll slide-in-up" style="animation-delay: 0.1s;">
+                     <h4><i class="fas fa-tools"></i> Tools & Tech</h4>
+                     <ul><li>Azure AD</li><li>Power BI</li><li>Alteryx</li><li>Tableau</li><li>Git / GitHub</li><li>Kali Linux</li><li>Nmap</li><li>Wireshark</li><li>Aircrack-ng</li><li>Docker</li><li>Unix/Linux</li></ul>
+                 </div>
 
-             <div class="skills-category fade-in-element">
-                 <h4>Interests & Certifications</h4>
-                 <ul>
-                     <li>Cybersecurity</li>
-                     <li>Photography/Videography</li>
-                     <li>Network architecture</li>
-                     <li>Web design</li>
-                     <li>Acoustic engineering</li>
-                     <li>Homelab</li>
-                     <li>Coffee</li>
-                    <li>Pursuing CompTIA Security+</li>
-                </ul>
+                 <div class="skills-category animate-on-scroll slide-in-up" style="animation-delay: 0.2s;">
+                    <h4><i class="fas fa-brain"></i> Concepts</h4>
+                     <ul><li>Cybersecurity Principles</li><li>Network Security</li><li>IAM / RBAC</li><li>Penetration Testing</li><li>Vulnerability Assessment</li><li>Web Development (Full Stack)</li><li>Data Visualization</li><li>Cloud Computing (Azure Basics)</li><li>Agile Methodologies</li><li>IT Audit / Compliance (SOX)</li></ul>
+                </div>
+                 <div class="skills-category animate-on-scroll slide-in-up" style="animation-delay: 0.3s;">
+                    <h4><i class="fas fa-star"></i> Interests & Learning</h4>
+                     <ul><li>Homelabbing / Networking</li><li>Cloud Security</li><li>Acoustic Engineering</li><li>Photography / Videography</li><li>UI/UX Design Principles</li><li>Coffee Brewing</li><li>Pursuing: CompTIA Security+</li></ul>
+               </div>
             </div>
         </div>
     </section>
@@ -569,57 +640,92 @@
     <!-- Footer -->
     <footer>
         <div class="container">
-             <p>&copy; 2024 Subhan Sajid. All rights reserved.</p>
-        </div>
+             <p>Designed & Built with <i class="fas fa-heart" style="color: var(--primary-accent);"></i> by Subhan Sajid</p>
+             <p>Let's connect: <a href="mailto:subhansajid360@gmail.com">subhansajid360@gmail.com</a> | <a href="https://www.linkedin.com/in/subhanmsajid" target="_blank" rel="noopener noreferrer">LinkedIn</a> | <a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a></p>
+         </div>
     </footer>
 
     <script>
-        // --- Simple Fade-in Animation on Scroll ---
-        const observer = new IntersectionObserver((entries) => {
+        // --- Intersection Observer Setup ---
+        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.15 }; // Trigger slightly earlier
+
+        const observerCallback = (entries, observerInstance) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('is-visible');
-                    // Optional: Stop observing once it's visible if you don't want re-animation
-                    // observer.unobserve(entry.target);
-                 }
-                // Optional: Remove 'is-visible' if you want it to fade out when scrolling out
-                // else {
-                //     entry.target.classList.remove('is-visible');
-                // }
+                    entry.target.classList.add('visible');
+                    // observerInstance.unobserve(entry.target); // Optional: Keep animations triggerable
+                } else {
+                    // Optional: Remove class to re-animate on scroll up
+                    // entry.target.classList.remove('visible');
+                }
             });
-        }, {
-             rootMargin: '0px', // can adjust margin if needed
-             threshold: 0.1 // Trigger when 10% of the element is visible
-        });
+        };
 
-        // Select all elements you want to fade in
-        const elementsToFade = document.querySelectorAll('.fade-in-element');
-        elementsToFade.forEach(el => observer.observe(el));
+        const observer = new IntersectionObserver(observerCallback, observerOptions);
+        document.querySelectorAll('section, .animate-on-scroll, .content-card, .skills-category').forEach(el => {
+             if (el) observer.observe(el);
+         });
+         // Observe skills list items specifically if staggering becomes JS-dependent
+         // But CSS child delays work well for this case.
 
-        // --- Active Nav Link Highlighting --- (Basic version)
-        // More robust solutions exist, but this is simple for this context
-        const navLinks = document.querySelectorAll('nav ul li a');
-        const sections = document.querySelectorAll('section');
+        // --- Navigation Logic (Highlighting & Hide/Show) ---
+         const navbar = document.getElementById('navbar');
+         const navLinks = navbar.querySelectorAll('ul li a');
+         const sections = document.querySelectorAll('section[id]'); // Select sections with IDs for linking
+         let lastScrollTop = 0;
 
-        window.addEventListener('scroll', () => {
+         const handleScroll = () => {
+             let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+             // Nav Hide/Show
+             if (scrollTop > lastScrollTop && scrollTop > navbar.offsetHeight + 100) {
+                 document.body.classList.add('scroll-down');
+             } else {
+                 document.body.classList.remove('scroll-down');
+             }
+              if (scrollTop > 50) { // Add scrolled class for subtle style change
+                  document.body.classList.add('scrolled');
+              } else {
+                  document.body.classList.remove('scrolled');
+              }
+             lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+
+             // Nav Highlighting
             let currentSectionId = '';
-             sections.forEach(section => {
+            sections.forEach(section => {
                  const sectionTop = section.offsetTop;
                  const sectionHeight = section.clientHeight;
-                 // Check if scroll position is within the section bounds (adjust 150 for nav height/offset)
-                 if (pageYOffset >= (sectionTop - sectionHeight / 3)) {
+                 // Consider active when section top is near viewport top/middle
+                 const triggerPoint = scrollTop + navbar.offsetHeight + 50; // Point below navbar
+                if (sectionTop <= triggerPoint && sectionTop + sectionHeight > triggerPoint) {
                      currentSectionId = section.getAttribute('id');
                  }
              });
 
+              // Special case for reaching the bottom of the page
+             if (window.innerHeight + window.pageYOffset >= document.body.offsetHeight - 100) { // Near bottom
+                 currentSectionId = sections[sections.length - 1].getAttribute('id');
+             }
+
+
             navLinks.forEach(link => {
                 link.classList.remove('active');
-                if (link.getAttribute('href') === `#${currentSectionId}`) {
+                 const linkHref = link.getAttribute('href');
+                 if (linkHref && linkHref.substring(1) === currentSectionId) {
                      link.classList.add('active');
-                }
-             });
-        });
+                 }
+            });
+        };
 
+         window.addEventListener('scroll', handleScroll, { passive: true }); // Use passive listener
+         window.addEventListener('load', handleScroll); // Initial check
+
+
+        // --- Optional: Console Greeting ---
+        console.log(
+            "%cHi there! 👋 Interested in the code? Let's connect!",
+            "background: #1a2238; color: #4ecdc4; font-size: 1.2rem; padding: 10px; border-radius: 5px; font-family: Poppins, sans-serif;"
+         );
 
     </script>
 
