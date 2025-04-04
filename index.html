@@ -3,22 +3,625 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Subhan Sajid - Interactive Resume</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div id="info">Click on a sphere!</div>
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    <title>Subhan Sajid - Resume</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- Global Styles & Variables --- */
+        :root {
+            --primary-color: #2c3e50; /* Dark Blue/Gray */
+            --secondary-color: #3498db; /* Medium Blue */
+            --accent-color: #e74c3c; /* Red Accent */
+            --light-gray: #ecf0f1;
+            --dark-gray: #7f8c8d;
+            --text-color: #34495e;
+            --bg-color: #ffffff;
+            --card-bg: #f8f9fa;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            --transition-speed: 0.3s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.7;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.8em;
+        }
+
+        h1 { font-size: 2.8rem; line-height: 1.2; margin-bottom: 0.3em; }
+        h2 { font-size: 2rem; border-bottom: 3px solid var(--secondary-color); padding-bottom: 0.3em; margin-bottom: 1.5em; display: inline-block; }
+        h3 { font-size: 1.4rem; color: var(--secondary-color); }
+        h4 { font-size: 1.1rem; color: var(--dark-gray); font-weight: 400; margin-bottom: 0.5em;}
+
+        p {
+            margin-bottom: 1em;
+        }
+
+        a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            transition: color var(--transition-speed) ease;
+        }
+
+        a:hover {
+            color: var(--accent-color);
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 0.8em;
+            position: relative;
+        }
+
+        li::before {
+            content: '•';
+            color: var(--secondary-color);
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1.3em;
+            position: absolute;
+            top: 1px;
+        }
+
+        section {
+            padding: 60px 0;
+        }
+
+        section:nth-of-type(even) {
+             background-color: var(--light-gray);
+        }
+
+        /* --- Header / Hero --- */
+        .hero {
+            background: linear-gradient(rgba(44, 62, 80, 0.8), rgba(44, 62, 80, 0.9)), url('https://via.placeholder.com/1500x800/2c3e50/ecf0f1?text=Modern+Background') center center/cover no-repeat; /* Placeholder background */
+            color: var(--bg-color);
+            padding: 100px 0 80px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            color: var(--bg-color);
+            margin-bottom: 0.1em;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--light-gray);
+            margin-bottom: 1.5em;
+        }
+
+        .contact-info a {
+            color: var(--light-gray);
+            margin: 0 15px;
+            transition: color var(--transition-speed) ease;
+            font-size: 1rem;
+        }
+        .contact-info a:hover {
+            color: var(--secondary-color);
+        }
+        .contact-info i { /* For potential icons */
+            margin-right: 5px;
+        }
+
+
+        /* --- Navigation --- */
+        nav {
+            background-color: var(--primary-color);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: center; /* Center nav items */
+            align-items: center;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            padding-left: 0; /* Override default ul padding */
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+        nav ul li::before {
+            content: none; /* Remove list bullets */
+        }
+
+        nav ul li a {
+            color: var(--bg-color);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+        }
+
+        nav ul li a:hover, nav ul li a.active {
+            background-color: var(--secondary-color);
+            color: var(--bg-color);
+        }
+
+
+        /* --- Experience & Education Cards --- */
+        .timeline-item {
+            background: var(--card-bg);
+            padding: 25px;
+            margin-bottom: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            border-left: 5px solid var(--secondary-color);
+            transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+        }
+
+        .timeline-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap; /* Allow wrapping on small screens */
+            margin-bottom: 10px;
+        }
+
+        .item-header h3 {
+            margin-bottom: 0.2em; /* Reduce space below title */
+        }
+
+        .item-header .date {
+            font-weight: 600;
+            color: var(--primary-color);
+            background-color: var(--light-gray);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            white-space: nowrap; /* Prevent date from wrapping */
+        }
+
+        /* --- Skills --- */
+        #skills ul {
+            padding-left: 0; /* Remove padding for skills list */
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px; /* Spacing between skill tags */
+        }
+
+        #skills li {
+            background-color: var(--secondary-color);
+            color: var(--bg-color);
+            padding: 8px 15px;
+            border-radius: 20px; /* Pill shape */
+            font-size: 0.95em;
+            font-weight: 400;
+            transition: background-color var(--transition-speed) ease, transform var(--transition-speed) ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        #skills li:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        #skills li::before {
+            content: none; /* Remove default bullet */
+        }
+
+        .skills-category {
+            margin-bottom: 25px;
+        }
+        .skills-category h4 {
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            font-weight: 600;
+            border-bottom: 2px solid var(--light-gray);
+            padding-bottom: 5px;
+            display: inline-block;
+        }
+
+
+        /* --- Footer --- */
+        footer {
+            background-color: var(--primary-color);
+            color: var(--light-gray);
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 40px; /* Add some space before footer */
+        }
+
+        footer p {
+            margin-bottom: 0;
+        }
+
+        /* --- Animations --- */
+        .fade-in-element {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-in-element.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.2rem; }
+            h2 { font-size: 1.7rem; }
+            h3 { font-size: 1.2rem; }
+
+            nav ul {
+                flex-direction: column; /* Stack nav items */
+                align-items: center;
+            }
+            nav ul li {
+                 margin: 8px 0; /* Add vertical spacing */
+            }
+
+            .hero {
+                padding: 80px 0 60px;
+            }
+
+            .item-header {
+                flex-direction: column; /* Stack title and date */
+                align-items: flex-start;
+            }
+             .item-header .date {
+                margin-top: 5px; /* Add space between title and date */
+            }
+
+            section {
+                padding: 40px 0;
+            }
+
+            li {
+               font-size: 0.95rem; /* Slightly smaller text on mobile */
+            }
+             li::before {
+                margin-left: -1.1em; /* Adjust bullet position */
             }
         }
+
+        @media (max-width: 480px) {
+            h1 { font-size: 1.8rem; }
+            h2 { font-size: 1.5rem; }
+
+             .contact-info {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            .contact-info a {
+                margin: 5px 0;
+            }
+
+            #skills li {
+                font-size: 0.9rem;
+                padding: 6px 12px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="container">
+            <h1>Subhan Sajid</h1>
+            <p>Management Information Systems Student | Aspiring Cybersecurity Professional</p>
+            <div class="contact-info">
+                <a href="mailto:subhansajid360@gmail.com">subhansajid360@gmail.com</a> |
+                <span>(832) 757-3491</span> |
+                <span>Houston, Texas 77407</span> |
+                <a href="https://www.linkedin.com/in/subhanmsajid" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="container">
+             <ul>
+                <li><a href="#education">Education</a></li>
+                <li><a href="#experience">Experience</a></li>
+                <li><a href="#leadership">Leadership</a></li>
+                <li><a href="#activities">Activities</a></li>
+                <li><a href="#skills">Skills</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Education Section -->
+    <section id="education">
+        <div class="container">
+            <h2>Education</h2>
+            <div class="timeline-item fade-in-element">
+                <div class="item-header">
+                    <h3>C. T. Bauer College of Business, University of Houston</h3>
+                    <span class="date">Expected May 2024</span>
+                </div>
+                <h4>Houston, Texas</h4>
+                <ul>
+                    <li>Bauer College of Business: BBA in Management Information Systems</li>
+                    <li>Cumulative GPA: 3.65/4.00</li>
+                    <li>Honors: Dean's List (May 2022-2023)</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Professional Experience Section -->
+    <section id="experience">
+        <div class="container">
+            <h2>Professional Experience</h2>
+
+            <div class="timeline-item fade-in-element">
+                <div class="item-header">
+                    <h3>Ernst & Young (EY) - Cybersecurity Consulting Intern</h3>
+                    <span class="date">June 2023 – August 2023</span>
+                </div>
+                <h4>Houston, Texas</h4>
+                <ul>
+                    <li>Devised and executed an Azure Active Directory automatic security assessment using PowerShell and Microsoft Graph API.</li>
+                    <li>Boosted IAM assessment efficiency by 200%, enabling consultants to flag vulnerabilities automatically for newly acquired clients.</li>
+                    <li>Engaged with a team of 6 to deploy the assessment solution, uncovering 15 Azure Active Directory vulnerabilities in the environment to mitigate privilege escalation risks in alignment with Microsoft Security Framework standards.</li>
+                    <li>Automated PowerBI dashboards to visually demonstrate key security statistics with client executives clearly and transparently.</li>
+                </ul>
+            </div>
+
+            <div class="timeline-item fade-in-element">
+                <div class="item-header">
+                    <h3>PricewaterhouseCoopers (PwC) - Digital Assurance and Transparency Intern</h3>
+                    <span class="date">August 2022 – December 2022</span>
+                </div>
+                <h4>Houston, TX</h4>
+                 <ul>
+                    <li>Utilized Alteryx and Tableau to recreate 5 of our client's automations from the ground according to SOX standards.</li>
+                    <li>Reconstructed systems and designed tailored solutions to correct client controls on a portfolio containing 1100+ holdings.</li>
+                    <li>Audited client IT controls and financial reporting automations rigorously to ensure efficiency without compromising accuracy.</li>
+                    <li>Engaged closely with clients and cross-functional teams to discuss client requirements, conduct gap analyses, and implement optimized solutions aligned with client objectives and PCAOB regulatory requirements for publicly facing investor reports.</li>
+                </ul>
+            </div>
+
+             <div class="timeline-item fade-in-element">
+                <div class="item-header">
+                    <h3>Mobile Dream Inc - Audio Solutions Expert</h3>
+                     <span class="date">November 2021 – August 2022</span>
+                </div>
+                 <h4>Houston, TX</h4>
+                <ul>
+                    <li>Leveraged in-depth product knowledge to provide tailored audio solutions, resulting in a 30% increase in customer satisfaction ratings.</li>
+                    <li>Excelled in a dynamic sales environment, meeting and surpassing sales quotas while upholding brand integrity and customer trust.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Leadership Experience Section -->
+    <section id="leadership">
+        <div class="container">
+             <h2>Leadership Experience</h2>
+
+             <div class="timeline-item fade-in-element">
+                <div class="item-header">
+                    <h3>Muslim Interscholastic Tournament - Logistics Chair & Board Member</h3>
+                    <span class="date">January 2024 - Present</span>
+                </div>
+                <ul>
+                    <li>Coordinated a student tournament with 10,000+ participants, while actively contributing to strategic planning in board meetings for holistic organizational development and future event planning for further community development among religious minorities.</li>
+                    <li>Served as a passionate advocate for youth leadership, inspiring others to join in advancing the world and growing to their potential.</li>
+                </ul>
+            </div>
+
+             <div class="timeline-item fade-in-element">
+                <div class="item-header">
+                     <h3>MIS 4397 Business Systems Consulting - Team Lead</h3>
+                     <span class="date">August 2023 - December 2023</span>
+                </div>
+                <ul>
+                    <li>Led weekly client meetings to present progress updates, discuss client objectives and constraints, while effectively managing expectations.</li>
+                    <li>Coordinated a team of 6 to develop a web-based dashboard using PowerBI automations to present client progress for investors.</li>
+                </ul>
+            </div>
+         </div>
+    </section>
+
+    <!-- Extracurricular Activities Section -->
+    <section id="activities">
+         <div class="container">
+            <h2>Extracurricular Activities</h2>
+
+            <div class="timeline-item fade-in-element">
+                <div class="item-header">
+                    <h3>Hack The Box - CTF Participant</h3>
+                    <span class="date">June 2022 - Present</span>
+                </div>
+                <ul>
+                    <li>Conducted penetration tests on simulated Linux systems and web environments with Nmap, Wireshark, and Aircrack-ng.</li>
+                    <li>Discovered exploits and weak permissions by utilizing SQL injection, XSS, and various privilege escalation techniques.</li>
+                 </ul>
+            </div>
+
+             <div class="timeline-item fade-in-element">
+                <div class="item-header">
+                    <h3>The Odin Project - Participant</h3>
+                    <span class="date">August 2024 - Present</span> <!-- Note: This date seems future/aspirational -->
+                </div>
+                 <ul>
+                     <li>Developed modern web applications from scratch with JS, HTML, and CSS while utilizing GIT and launching remote servers to host them.</li>
+                </ul>
+            </div>
+
+            <div class="timeline-item fade-in-element">
+                 <div class="item-header">
+                    <h3>Maryam Islamic Center - Youth Team Mentor</h3>
+                     <span class="date">May 2018 - Present</span>
+                </div>
+                 <ul>
+                    <li>Proactively learned while mentoring the youth team on life skills, fostering a culture of continuous learning within the community.</li>
+                    <li>Volunteered in outreach projects across the Houston area to strengthen bonds citywide while promoting positive social change.</li>
+                </ul>
+            </div>
+
+             <div class="timeline-item fade-in-element">
+                <div class="item-header">
+                     <h3>Management Information Systems Student Organization - Mentor</h3>
+                    <span class="date">January 2024 – May 2024</span>
+                 </div>
+                 <ul>
+                    <li>Engaged in proactive networking by facilitating meetings with firms in the IT sector, fostering valuable connections and industry insights.</li>
+                     <li>Mentored students on a variety of topics related to job hunting, resume reviews, and difficult courses through my personal experiences.</li>
+                 </ul>
+             </div>
+        </div>
+    </section>
+
+    <!-- Skills and Interests Section -->
+    <section id="skills">
+        <div class="container">
+            <h2>Skills and Interests</h2>
+
+            <div class="skills-category fade-in-element">
+                 <h4>Programming Languages</h4>
+                 <ul>
+                     <li>Python</li>
+                     <li>SQL</li>
+                     <li>Java</li>
+                     <li>Javascript</li>
+                     <li>HTML/CSS</li>
+                     <li>Powershell</li>
+                     <li>C++</li>
+                     <li>MATLAB</li>
+                </ul>
+            </div>
+
+            <div class="skills-category fade-in-element">
+                 <h4>Software Tools</h4>
+                 <ul>
+                     <li>Azure Active Directory</li>
+                     <li>Kali Linux</li>
+                     <li>Aircrack-ng</li> <!-- Corrected from resume image -->
+                     <li>Nmap</li>
+                     <li>Z Shell</li>
+                     <li>Unix</li>
+                     <li>PowerBI</li>
+                     <li>Alteryx</li> <!-- Added from PwC exp -->
+                     <li>Tableau</li> <!-- Added from PwC exp -->
+                     <li>Git</li> <!-- Added from Odin Project exp -->
+                </ul>
+            </div>
+
+             <div class="skills-category fade-in-element">
+                 <h4>Interests & Certifications</h4>
+                 <ul>
+                     <li>Cybersecurity</li>
+                     <li>Photography/Videography</li>
+                     <li>Network architecture</li>
+                     <li>Web design</li>
+                     <li>Acoustic engineering</li>
+                     <li>Homelab</li>
+                     <li>Coffee</li>
+                    <li>Pursuing CompTIA Security+</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+             <p>&copy; 2024 Subhan Sajid. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- Simple Fade-in Animation on Scroll ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    // Optional: Stop observing once it's visible if you don't want re-animation
+                    // observer.unobserve(entry.target);
+                 }
+                // Optional: Remove 'is-visible' if you want it to fade out when scrolling out
+                // else {
+                //     entry.target.classList.remove('is-visible');
+                // }
+            });
+        }, {
+             rootMargin: '0px', // can adjust margin if needed
+             threshold: 0.1 // Trigger when 10% of the element is visible
+        });
+
+        // Select all elements you want to fade in
+        const elementsToFade = document.querySelectorAll('.fade-in-element');
+        elementsToFade.forEach(el => observer.observe(el));
+
+        // --- Active Nav Link Highlighting --- (Basic version)
+        // More robust solutions exist, but this is simple for this context
+        const navLinks = document.querySelectorAll('nav ul li a');
+        const sections = document.querySelectorAll('section');
+
+        window.addEventListener('scroll', () => {
+            let currentSectionId = '';
+             sections.forEach(section => {
+                 const sectionTop = section.offsetTop;
+                 const sectionHeight = section.clientHeight;
+                 // Check if scroll position is within the section bounds (adjust 150 for nav height/offset)
+                 if (pageYOffset >= (sectionTop - sectionHeight / 3)) {
+                     currentSectionId = section.getAttribute('id');
+                 }
+             });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${currentSectionId}`) {
+                     link.classList.add('active');
+                }
+             });
+        });
+
+
     </script>
-    <!-- GSAP for animations -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
-    <!-- Main script -->
-    <script type="module" src="main.js"></script>
+
 </body>
 </html>
