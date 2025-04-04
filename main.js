@@ -1,9 +1,9 @@
-import *->import { ColorManagement, AmbientLight } from "three";
-*;
 import {
   WebGLRenderer, PerspectiveCamera, Scene, Vector3, Color,
-  MeshStandardMaterial, SphereGeometry, Mesh, Raycaster, Vector2, Group
+  MeshStandardMaterial, SphereGeometry, Mesh, Raycaster, Vector2, Group,
+  AmbientLight // Correct import of AmbientLight
 } from 'three';
+
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
 import { gsap } from 'gsap';
