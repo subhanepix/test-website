@@ -120,7 +120,7 @@
          }
 
          /* Angled Divider - Top of Odd Sections (Except first one - Education) */
-         section:nth-of-type(odd):not(:first-of-type)::before {
+         section:nth-of-type(odd):not(#education)::before { /* Target specific sections or use :not(:first-of-type) */
             content: '';
             position: absolute;
             top: 0;
@@ -168,33 +168,43 @@
              opacity: 0;
         }
 
-        /* Typewriter effect container */
-        .hero .subtitle {
-             font-size: 1.6rem; color: var(--secondary-accent); margin: 15px 0 30px 0;
-             font-family: var(--font-code); display: inline-block; /* Important for border */
-             border-right: 2px solid var(--secondary-accent); /* Blinking cursor */
-             white-space: nowrap; overflow: hidden;
-             animation: typewriter 4s steps(40) 1s forwards, blinkCursor 0.75s step-end infinite;
-             animation-delay: 1s; /* Start after H1 */
-             opacity: 0; /* Start hidden */
-             max-width: 0; /* Start hidden */
+         /* Typewriter effect container - UPDATED for Centering Fix */
+         .hero .subtitle-wrapper { /* Added wrapper */
+             text-align: center; /* Center the inline-block p tag within this wrapper */
+             min-height: 1.8em; /* Prevent collapse before animation (adjust if font size changes) */
+             margin: 15px 0 30px 0;
              position: relative; z-index: 1;
+             width: 100%; /* Take full width for centering */
+             display: flex; /* Use flex to center inline-block child */
+             justify-content: center; /* Center the subtitle P */
+        }
+         .hero .subtitle {
+             font-size: 1.6rem;
+             color: var(--secondary-accent);
+             /* margin removed, handled by wrapper now */
+             font-family: var(--font-code);
+             display: inline-block; /* Allows border-right and width:fit-content */
+             position: relative;
+             border-right: 3px solid transparent; /* Cursor - start transparent */
+             white-space: nowrap; /* Keep text on one line */
+             overflow: hidden; /* Hide clipped content */
+             width: fit-content; /* Natural width */
+             max-width: 100%; /* Prevent overflow if very long */
+             /* Animation */
+             opacity: 0; /* Start hidden before animation */
+             animation:
+                 typewriter 3.5s steps(40) 1s forwards, /* Steps control speed */
+                 blinkCursor 0.75s step-end infinite 1s;
+             animation-delay: 1s; /* Delay after H1 animation */
          }
 
-         @keyframes typewriter {
-             from { max-width: 0; opacity: 1; }
-             to { max-width: 100%; opacity: 1; } /* Adjust 100% if text is longer */
-         }
-         @keyframes blinkCursor {
-             from, to { border-color: transparent; }
-             50% { border-color: var(--secondary-accent); }
-         }
 
         .hero .contact-info {
              margin-top: 25px; display: flex; gap: 25px; justify-content: center; flex-wrap: wrap;
              position: relative; z-index: 1;
              opacity: 0;
-             animation: slideInFromBottom 1s ease-out 2.5s forwards; /* Delay after typewriter */
+             /* Updated Delay: H1(1s) + Typewriter(3.5s) = 4.5s start */
+             animation: slideInFromBottom 1s ease-out 4.5s forwards;
          }
         .hero .contact-info a {
              color: var(--text-medium); font-size: 1rem;
@@ -208,18 +218,23 @@
         .scroll-down-indicator {
             position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
             color: var(--text-medium); font-size: 2.5rem; z-index: 1;
-            opacity: 0; animation: fadeInBounce 2s infinite 3.5s forwards;
+            opacity: 0;
+            /* Updated Delay: H1(1s) + Typewriter(3.5s) + ContactInfoStartDelay(0.5s) = 5s start */
+             animation: fadeInBounce 2s infinite 5s forwards;
         }
-         @keyframes fadeInBounce {
-             0% { opacity: 0; transform: translate(-50%, 10px); }
-             20% { opacity: 1; transform: translate(-50%, -5px); }
-             40% { transform: translate(-50%, 0); }
-             100% { opacity: 1; transform: translate(-50%, 0); } /* Stay visible */
-         }
          @keyframes bounceOnly { /* Reusable bounce part */
              0%, 100% { transform: translateY(0); }
              50% { transform: translateY(-10px); }
          }
+          @keyframes fadeInBounce {
+             0% { opacity: 0; transform: translate(-50%, 10px) scale(0.8); } /* Start slightly lower and smaller */
+             20% { opacity: 1; transform: translate(-50%, -5px) scale(1.1); } /* Bounce up and larger */
+             40% { transform: translate(-50%, 0) scale(1); } /* Settle */
+             /* The 'infinite' property handles repeating the bounce after settling */
+            /* For non-repeating visible state: */
+            /* 100% { opacity: 1; transform: translate(-50%, 0) scale(1); } */
+          }
+
          .scroll-down-indicator:hover { animation-play-state: paused; } /* Optional: pause bounce on hover */
 
         /* --- Navigation --- */
@@ -296,7 +311,7 @@
             border-radius: 5px; font-size: 0.9em; white-space: nowrap;
             font-family: var(--font-code); letter-spacing: 0.5px;
         }
-         .content-card ul { padding-left: 5px; } /* Reduce extra padding */
+         .content-card ul { padding-left: 5px; } /* Reduce extra padding for FA list */
          .content-card li { font-size: 1rem; color: var(--text-light); /* Make text brighter */ }
 
         /* --- Skills Section Styling --- */
@@ -333,14 +348,14 @@
         #skills.visible .skills-category ul li {
              animation: scaleUpPunch 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; /* Punchy animation */
          }
-        /* Stagger delay remains same as before, applied via inline style in HTML potentially */
-        #skills li:nth-child(1) { animation-delay: 0.1s; } #skills li:nth-child(2) { animation-delay: 0.15s; }
-        #skills li:nth-child(3) { animation-delay: 0.2s; } #skills li:nth-child(4) { animation-delay: 0.25s; }
-        #skills li:nth-child(5) { animation-delay: 0.3s; } #skills li:nth-child(6) { animation-delay: 0.35s; }
-        #skills li:nth-child(7) { animation-delay: 0.4s; } #skills li:nth-child(8) { animation-delay: 0.45s; }
-        #skills li:nth-child(9) { animation-delay: 0.5s; } #skills li:nth-child(10) { animation-delay: 0.55s; }
-        /* etc. */
-
+        /* Stagger delay applied via JS if needed, or CSS child :nth-child like before */
+        /* Let's use CSS for simplicity unless > 10-15 items where JS is better */
+         #skills li:nth-child(1) { animation-delay: 0.1s; } #skills li:nth-child(2) { animation-delay: 0.15s; }
+         #skills li:nth-child(3) { animation-delay: 0.2s; } #skills li:nth-child(4) { animation-delay: 0.25s; }
+         #skills li:nth-child(5) { animation-delay: 0.3s; } #skills li:nth-child(6) { animation-delay: 0.35s; }
+         #skills li:nth-child(7) { animation-delay: 0.4s; } #skills li:nth-child(8) { animation-delay: 0.45s; }
+         #skills li:nth-child(9) { animation-delay: 0.5s; } #skills li:nth-child(10) { animation-delay: 0.55s; }
+         #skills li:nth-child(11) { animation-delay: 0.6s; } #skills li:nth-child(12) { animation-delay: 0.65s; }
 
          #skills li:hover {
              transform: translateY(-4px) scale(1.08);
@@ -372,17 +387,13 @@
         .slide-in-up { transform: translateY(70px); }
         .scale-in { transform: scale(0.8); }
 
+        /* '.visible' class added by Intersection Observer JS */
         section.visible .animate-on-scroll,
-        .content-card.visible { /* Added .visible to card for clarity */
+        .content-card.visible,
+        .skills-category.visible {
              opacity: 1; transform: translate(0, 0) scale(1);
         }
 
-
-        @keyframes scaleUpPunch { /* New skill animation */
-            0% { transform: scale(0); opacity: 0; }
-            60% { transform: scale(1.1); opacity: 1; }
-            100% { transform: scale(1); opacity: 1; }
-        }
 
          @keyframes slideInFromTop {
             from { transform: translateY(-50px); opacity: 0; }
@@ -392,6 +403,28 @@
             from { transform: translateY(50px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
+        @keyframes scaleUpPunch { /* Skill animation */
+            0% { transform: scale(0); opacity: 0; }
+            60% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+         /* UPDATED Typewriter Keyframe using clip-path */
+         @keyframes typewriter {
+             from {
+                 clip-path: inset(0 100% 0 0); /* Clip from right */
+                 opacity: 1; /* Make visible before clipping starts */
+             }
+             to {
+                 clip-path: inset(0 0 0 0); /* Fully revealed */
+                 opacity: 1;
+             }
+         }
+          /* UPDATED Blinking Cursor Keyframe */
+         @keyframes blinkCursor {
+             from, to { border-right-color: transparent; }
+             50% { border-right-color: var(--secondary-accent); }
+         }
+
 
         /* --- Responsive Design --- */
         @media (max-width: 1024px) {
@@ -418,21 +451,25 @@
             section { padding: 70px 0; }
             /* Adjust divider height on mobile */
             section:nth-of-type(even)::before,
-            section:nth-of-type(odd):not(:first-of-type)::before { height: 60px; }
+            section:nth-of-type(odd):not(#education)::before { height: 60px; }
              section:nth-of-type(even)::before { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 calc(100% - 20px)); }
-             section:nth-of-type(odd):not(:first-of-type)::before { clip-path: polygon(0 0, 100% 20px, 100% 100%, 0 100%); }
+             section:nth-of-type(odd):not(#education)::before { clip-path: polygon(0 0, 100% 20px, 100% 100%, 0 100%); }
 
              /* Make horizontal slides default to vertical on mobile */
             .slide-in-left, .slide-in-right { transform: translateY(60px); }
+             /* Ensure visible state correctly resets transform */
             section.visible .animate-on-scroll,
-            .content-card.visible { transform: translateY(0) scale(1); }
+            .content-card.visible,
+             .skills-category.visible {
+                transform: translateY(0) scale(1);
+             }
         }
 
         @media (max-width: 480px) {
              h1 { font-size: 2.2rem; }
              .hero h1 { font-size: 2.5rem; }
              h2 { font-size: 1.7rem; }
-             .hero .subtitle { font-size: 1.1rem; animation-duration: 3s; } /* Slow down typing slightly */
+             .hero .subtitle { font-size: 1.1rem; animation-duration: 3s; } /* Slower typing if needed */
              .container { padding: 0 15px; }
 
              .hero .contact-info { flex-direction: column; align-items: center; gap: 15px; }
@@ -443,7 +480,7 @@
 
             section { padding: 60px 0; }
              section:nth-of-type(even)::before,
-             section:nth-of-type(odd):not(:first-of-type)::before { height: 50px; }
+            section:nth-of-type(odd):not(#education)::before { height: 50px; }
          }
 
     </style>
@@ -454,8 +491,10 @@
     <header class="hero">
         <div class="container">
             <h1>Subhan Sajid</h1>
-            <!-- Wrap subtitle for animation -->
-            <div><p class="subtitle">// Building Bridges Between Tech & Business //</p></div>
+            <!-- Centering Fix: Added Wrapper Div -->
+            <div class="subtitle-wrapper">
+                <p class="subtitle">// Building Bridges Between Tech & Business //</p>
+            </div>
             <div class="contact-info">
                 <a href="mailto:subhansajid360@gmail.com"><i class="fas fa-envelope"></i> subhansajid360@gmail.com</a>
                  <a><i class="fas fa-phone"></i> (832) 757-3491</a>
@@ -572,6 +611,16 @@
                     <li><span class="fa-li"><i class="fas fa-tachometer-alt"></i></span>Spearheaded the development of an interactive Power BI dashboard visualizing project KPIs for investors.</li>
                 </ul>
             </article>
+            <article class="content-card animate-on-scroll slide-in-right"> {/* Merged Community Item Here */}
+                 <div class="card-header">
+                    <h3><i class="fas fa-people-carry"></i> Community Engagement (MIC / MISSO)</h3>
+                     <span class="date">Ongoing / Past</span>
+                 </div>
+                 <ul class="fa-ul">
+                     <li><span class="fa-li"><i class="fas fa-child"></i></span>Mentoring youth on life skills at Maryam Islamic Center, fostering continuous learning (May 2018 - Present).</li>
+                     <li><span class="fa-li"><i class="fas fa-network-wired"></i></span>Facilitating networking & mentoring within the MIS Student Organization (Jan 2024 - May 2024).</li>
+                 </ul>
+             </article>
          </div>
     </section>
 
@@ -587,7 +636,7 @@
                 </div>
                  <ul class="fa-ul">
                     <li><span class="fa-li"><i class="fas fa-search-plus"></i></span>Actively honing penetration testing skills via Capture The Flag events and Hack The Box labs.</li>
-                     <li><span class="fa-li"><i class="fas fa-network-wired"></i></span>Hands-on practice with Nmap, Wireshark, Aircrack-ng, Metasploit in simulated environments.</li>
+                     <li><span class="fa-li"><i class="fas fa-ethernet"></i></span>Hands-on practice with Nmap, Wireshark, Aircrack-ng, Metasploit in simulated environments.</li>
                     <li><span class="fa-li"><i class="fas fa-bug"></i></span>Identifying and exploiting vulnerabilities: SQL Injection, XSS, Privilege Escalation, Web App Flaws.</li>
                  </ul>
             </article>
@@ -600,7 +649,7 @@
                  <ul class="fa-ul">
                      <li><span class="fa-li"><i class="fab fa-js-square"></i></span>Developing responsive web applications from scratch using JavaScript, HTML, CSS, and backend frameworks (e.g., Node.js/Express).</li>
                      <li><span class="fa-li"><i class="fas fa-code-branch"></i></span>Proficient with Git version control workflows for collaborative and personal projects.</li>
-                     <li><span class="fa-li"><i class="fas fa-server"></i></span>Deploying applications to cloud platforms and managing remote servers.</li>
+                     <li><span class="fa-li"><i class="fas fa-server"></i></span>Deploying applications to cloud platforms (e.g., Heroku, Netlify) and managing servers.</li>
                  </ul>
              </article>
 
@@ -615,21 +664,21 @@
             <h2 class="animate-on-scroll slide-in-up"><i class="fas fa-cogs"></i> My Toolkit</h2>
 
             <div class="skills-grid">
-                <div class="skills-category animate-on-scroll slide-in-up">
+                <div class="skills-category animate-on-scroll slide-in-up visible"> {/* Mark visible for immediate child anim */}
                      <h4><i class="fas fa-code"></i> Languages</h4>
                      <ul><li>Python</li><li>SQL</li><li>JavaScript</li><li>HTML5</li><li>CSS3</li><li>PowerShell</li><li>Bash/Z Shell</li><li>Java</li><li>C++</li><li>MATLAB</li></ul>
                 </div>
 
-                <div class="skills-category animate-on-scroll slide-in-up" style="animation-delay: 0.1s;">
+                <div class="skills-category animate-on-scroll slide-in-up visible" style="animation-delay: 0.1s;">
                      <h4><i class="fas fa-tools"></i> Tools & Tech</h4>
                      <ul><li>Azure AD</li><li>Power BI</li><li>Alteryx</li><li>Tableau</li><li>Git / GitHub</li><li>Kali Linux</li><li>Nmap</li><li>Wireshark</li><li>Aircrack-ng</li><li>Docker</li><li>Unix/Linux</li></ul>
                  </div>
 
-                 <div class="skills-category animate-on-scroll slide-in-up" style="animation-delay: 0.2s;">
+                 <div class="skills-category animate-on-scroll slide-in-up visible" style="animation-delay: 0.2s;">
                     <h4><i class="fas fa-brain"></i> Concepts</h4>
                      <ul><li>Cybersecurity Principles</li><li>Network Security</li><li>IAM / RBAC</li><li>Penetration Testing</li><li>Vulnerability Assessment</li><li>Web Development (Full Stack)</li><li>Data Visualization</li><li>Cloud Computing (Azure Basics)</li><li>Agile Methodologies</li><li>IT Audit / Compliance (SOX)</li></ul>
                 </div>
-                 <div class="skills-category animate-on-scroll slide-in-up" style="animation-delay: 0.3s;">
+                 <div class="skills-category animate-on-scroll slide-in-up visible" style="animation-delay: 0.3s;">
                     <h4><i class="fas fa-star"></i> Interests & Learning</h4>
                      <ul><li>Homelabbing / Networking</li><li>Cloud Security</li><li>Acoustic Engineering</li><li>Photography / Videography</li><li>UI/UX Design Principles</li><li>Coffee Brewing</li><li>Pursuing: CompTIA Security+</li></ul>
                </div>
@@ -641,7 +690,7 @@
     <footer>
         <div class="container">
              <p>Designed & Built with <i class="fas fa-heart" style="color: var(--primary-accent);"></i> by Subhan Sajid</p>
-             <p>Let's connect: <a href="mailto:subhansajid360@gmail.com">subhansajid360@gmail.com</a> | <a href="https://www.linkedin.com/in/subhanmsajid" target="_blank" rel="noopener noreferrer">LinkedIn</a> | <a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a></p>
+             <p>Let's connect: <a href="mailto:subhansajid360@gmail.com">subhansajid360@gmail.com</a> | <a href="https://www.linkedin.com/in/subhanmsajid" target="_blank" rel="noopener noreferrer">LinkedIn</a> | <a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a></p> {/* <<<--- CONFIRM GITHUB LINK */}
          </div>
     </footer>
 
@@ -653,20 +702,20 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    // observerInstance.unobserve(entry.target); // Optional: Keep animations triggerable
-                } else {
-                    // Optional: Remove class to re-animate on scroll up
+                     // Uncomment below to make animations trigger only once
+                     // observerInstance.unobserve(entry.target);
+                 } else {
+                    // Uncomment below to re-animate on scroll up (can be performance heavy)
                     // entry.target.classList.remove('visible');
                 }
             });
         };
 
         const observer = new IntersectionObserver(observerCallback, observerOptions);
+        // Observe sections and elements intended for animation
         document.querySelectorAll('section, .animate-on-scroll, .content-card, .skills-category').forEach(el => {
              if (el) observer.observe(el);
          });
-         // Observe skills list items specifically if staggering becomes JS-dependent
-         // But CSS child delays work well for this case.
 
         // --- Navigation Logic (Highlighting & Hide/Show) ---
          const navbar = document.getElementById('navbar');
@@ -677,54 +726,59 @@
          const handleScroll = () => {
              let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-             // Nav Hide/Show
-             if (scrollTop > lastScrollTop && scrollTop > navbar.offsetHeight + 100) {
+             // Nav Hide/Show Logic
+             if (scrollTop > lastScrollTop && scrollTop > navbar.offsetHeight + 100) { // Scrolling Down past navbar height + buffer
                  document.body.classList.add('scroll-down');
-             } else {
+             } else { // Scrolling Up or near top
                  document.body.classList.remove('scroll-down');
              }
-              if (scrollTop > 50) { // Add scrolled class for subtle style change
+             // Add 'scrolled' class for subtle style changes after scrolling down a bit
+              if (scrollTop > 50) {
                   document.body.classList.add('scrolled');
               } else {
                   document.body.classList.remove('scrolled');
               }
-             lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+             lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // Update last scroll position
 
-             // Nav Highlighting
+             // Nav Highlighting Logic
             let currentSectionId = '';
+             const navHeightOffset = navbar.offsetHeight + 60; // Offset slightly below navbar
+
             sections.forEach(section => {
                  const sectionTop = section.offsetTop;
-                 const sectionHeight = section.clientHeight;
-                 // Consider active when section top is near viewport top/middle
-                 const triggerPoint = scrollTop + navbar.offsetHeight + 50; // Point below navbar
-                if (sectionTop <= triggerPoint && sectionTop + sectionHeight > triggerPoint) {
+                 const sectionBottom = sectionTop + section.clientHeight;
+
+                 // Check if the trigger point is within the section bounds
+                 if (scrollTop >= sectionTop - navHeightOffset && scrollTop < sectionBottom - navHeightOffset) {
                      currentSectionId = section.getAttribute('id');
                  }
              });
 
-              // Special case for reaching the bottom of the page
-             if (window.innerHeight + window.pageYOffset >= document.body.offsetHeight - 100) { // Near bottom
+              // Handle edge case: If very near the bottom, highlight the last section
+             if (window.innerHeight + scrollTop >= document.body.offsetHeight - 50) { // 50px buffer from bottom
                  currentSectionId = sections[sections.length - 1].getAttribute('id');
              }
 
-
+            // Update nav links 'active' class
             navLinks.forEach(link => {
-                link.classList.remove('active');
-                 const linkHref = link.getAttribute('href');
-                 if (linkHref && linkHref.substring(1) === currentSectionId) {
+                 link.classList.remove('active');
+                 // Check href attribute directly (safer than relying on element ID if href is different)
+                 if (link.getAttribute('href') === `#${currentSectionId}`) {
                      link.classList.add('active');
                  }
             });
         };
 
-         window.addEventListener('scroll', handleScroll, { passive: true }); // Use passive listener
-         window.addEventListener('load', handleScroll); // Initial check
+         // Attach scroll listener with passive option for performance
+         window.addEventListener('scroll', handleScroll, { passive: true });
+         // Run once on load to set initial state
+         window.addEventListener('load', handleScroll);
 
 
         // --- Optional: Console Greeting ---
         console.log(
-            "%cHi there! 👋 Interested in the code? Let's connect!",
-            "background: #1a2238; color: #4ecdc4; font-size: 1.2rem; padding: 10px; border-radius: 5px; font-family: Poppins, sans-serif;"
+            "%cHi there! 👋 Thanks for checking out my digital showcase. Let's connect!",
+            "background: var(--bg-dark, #121828); color: var(--secondary-accent, #4ecdc4); font-size: 1.1rem; padding: 10px 15px; border-radius: 8px; font-family: 'Poppins', sans-serif; border-left: 5px solid var(--primary-accent, #ff6b6b);"
          );
 
     </script>
